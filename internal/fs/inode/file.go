@@ -426,7 +426,7 @@ func (f *FileInode) SetMtime(
 	if strings.Contains(f.src.Name, ".m3u8") {
 		cacheControl = "no-cache, max-age=0"
 	}
-	
+
 	req := &gcs.UpdateObjectRequest{
 		Name:                       f.src.Name,
 		Generation:                 srcGen.Object,

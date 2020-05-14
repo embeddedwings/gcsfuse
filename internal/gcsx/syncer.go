@@ -88,12 +88,12 @@ func (oc *fullObjectCreator) Create(
 	srcObject *gcs.Object,
 	mtime time.Time,
 	r io.Reader) (o *gcs.Object, err error) {
-	
+
 	cacheControl := ""
 	if strings.Contains(srcObject.Name, ".m3u8") {
 		cacheControl = "no-cache, max-age=0"
 	}
-	
+
 	req := &gcs.CreateObjectRequest{
 		Name: srcObject.Name,
 		GenerationPrecondition:     &srcObject.Generation,

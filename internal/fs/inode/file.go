@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"io"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/googlecloudplatform/gcsfuse/internal/gcsx"
@@ -421,12 +422,16 @@ func (f *FileInode) SetMtime(
 	formatted := mtime.UTC().Format(time.RFC3339Nano)
 	srcGen := f.SourceGeneration()
 
-	noCacheData := "no-cache, max-age=0"
+	cacheControl := ""
+	if strings.Contains(f.src.Name, ".m3u8") {
+		cacheControl = "no-cache, max-age=0"
+	}
+	
 	req := &gcs.UpdateObjectRequest{
 		Name:                       f.src.Name,
 		Generation:                 srcGen.Object,
 		MetaGenerationPrecondition: &srcGen.Metadata,
-		CacheControl:               &noCacheData,
+		CacheControl:               &cacheControl,
 		Metadata: map[string]*string{
 			FileMtimeMetadataKey: &formatted,
 		},

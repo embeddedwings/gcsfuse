@@ -421,10 +421,12 @@ func (f *FileInode) SetMtime(
 	formatted := mtime.UTC().Format(time.RFC3339Nano)
 	srcGen := f.SourceGeneration()
 
+	noCacheData := "no-cache, max-age=0"
 	req := &gcs.UpdateObjectRequest{
 		Name:                       f.src.Name,
 		Generation:                 srcGen.Object,
 		MetaGenerationPrecondition: &srcGen.Metadata,
+		CacheControl:               &noCacheData,
 		Metadata: map[string]*string{
 			FileMtimeMetadataKey: &formatted,
 		},

@@ -92,6 +92,7 @@ func (oc *fullObjectCreator) Create(
 		GenerationPrecondition:     &srcObject.Generation,
 		MetaGenerationPrecondition: &srcObject.MetaGeneration,
 		Contents:                   r,
+		CacheControl:               "no-cache, max-age=0",
 		Metadata: map[string]string{
 			MtimeMetadataKey: mtime.Format(time.RFC3339Nano),
 		},
